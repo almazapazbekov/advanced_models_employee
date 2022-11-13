@@ -23,6 +23,14 @@ class Passport(AbstractPerson):
     id_card = models.IntegerField(max_length=30)
     person_data = models.OneToOneField(Employee, on_delete=models.CASCADE)
 
+    def get_gender(self):
+        gender = []
+        if Passport.objects.filter(inn__startswith=1):
+            gender = 'female'
+        elif Passport.objects.filter(inn__startswith=2):
+            gender = 'male'
+        return gender
+
 
 class WorkProject(models.Model):
     project_name = models.CharField(max_length=30)
