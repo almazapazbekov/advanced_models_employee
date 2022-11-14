@@ -14,7 +14,7 @@ class AbstractPerson(models.Model):
 
     def get_age(self):
         year_now = datetime.now().year
-        year_birth = self.birth_date
+        year_birth = self.birth_date.year
         return year_now - year_birth
 
     # def get_age(self):
