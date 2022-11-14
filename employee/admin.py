@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Passport, Employee
 
-# Register your models here.
+admin.site.register(Passport)
+admin.site.register(Employee)
