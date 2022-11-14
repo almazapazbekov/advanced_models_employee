@@ -14,13 +14,18 @@ class AbstractPerson(models.Model):
 
     def get_age(self):
         year_now = datetime.now().year
-        year_birth = self.birth_date.year
+        year_birth = self.birth_date
         return year_now - year_birth
+
+    # def get_age(self):
+    #     year_now = datetime.now().year
+    #     year_birth = datetime(self.birth_date).year
+    #     return year_now - year_birth
 
 
 class Employee(AbstractPerson):
     position = models.CharField(max_length=30)
-    salary = models.IntegerField(max_length=30)
+    salary = models.IntegerField()
     work_experience = models.CharField(max_length=100, null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -30,7 +35,7 @@ class Employee(AbstractPerson):
 
 class Passport(AbstractPerson):
     inn = models.CharField(max_length=30)
-    id_card = models.IntegerField(max_length=30)
+    id_card = models.IntegerField()
     person_data = models.OneToOneField(Employee, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
@@ -46,6 +51,9 @@ class Passport(AbstractPerson):
 
         return gender
 
+    def __str__(self):
+        return f'ФИО: {self.name} ИНН: {self.inn}, ID: {self.id_card}'
+
 
 class WorkProject(models.Model):
     project_name = models.CharField(max_length=30)
@@ -55,6 +63,9 @@ class WorkProject(models.Model):
         super().save(*args, **kwargs)
         print(f'Проект {self.project_name} успешно создан')
 
+    def __str__(self):
+        return self.project_name
+
 
 class Membership(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
@@ -63,7 +74,7 @@ class Membership(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        print(f'дата присоединения {self.date_joined}')
+        print(f'{self.employee} теперь член группы {self.work_project}. дата присоединения {self.date_joined}')
 
 
 class Client(AbstractPerson):
@@ -77,7 +88,7 @@ class Client(AbstractPerson):
 
 class VipClient(Client):
     vip_status_start = models.DateField()
-    donation_amount = models.IntegerField(max_length=30)
+    donation_amount = models.IntegerField()
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
